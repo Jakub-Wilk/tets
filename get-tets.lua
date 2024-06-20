@@ -99,6 +99,7 @@ shell.setDir("/")
 term.setTextColor(colors.blue)
 
 local tets_path = get_text("Path to install tets at:", "/bin/tets")
+tets_path = "/"..fs.combine(tets_path)
 
 if fs.exists(tets_path) then
     local do_reset = get_decision("A tets installation already exists at the selected path. Do you wish to reinstall?", -1)
@@ -109,18 +110,16 @@ if fs.exists(tets_path) then
     end
 end
 
+fs.makeDir(tets_path.."/".."packages")
+
 local do_global = get_decision("Do you want tets to install packages globally? (Programs will have to be ran through \"tets run\" to resolve tets dependencies, but it will save on disk space. When enabled, you can still install dependencies locally through \"tets localize\". This can be changed later.)", -1)
 
-fs.makeDir(tets_path)
-shell.setDir(tets_path)
-fs.makeDir("packages")
-
-local tetsconfig = fs.open("tetsconfig.json", "w")
+local tetsconfig = fs.open(tets_path.."/".."tetsconfig.json", "w")
 tetsconfig.write(textutils.serializeJSON({sources = {"https://raw.githubusercontent.com/Jakub-Wilk/cappack/master/tetsfile.json",}, global_first = do_global}))
 tetsconfig.close()
 
 local tets_script = http.get("https://raw.githubusercontent.com/Jakub-Wilk/tets/master/tets.lua").readAll()
-local tets = fs.open("tets.lua", "w")
+local tets = fs.open(tets_path.."/".."tets.lua", "w")
 tets.write(tets_script)
 tets.close()
 
