@@ -106,7 +106,7 @@ tets_path = "/"..fs.combine(tets_path)
 if fs.exists(tets_path) then
     local do_reset = get_decision("A tets installation already exists at the selected path. Do you wish to reinstall?", -1)
     if not do_reset then
-        shell.exit()
+        goto exit
     else
         fs.delete(tets_path)
     end
@@ -138,3 +138,5 @@ if do_restart then
 else
     print("Thank you for installing tets!")
 end
+
+::exit::
