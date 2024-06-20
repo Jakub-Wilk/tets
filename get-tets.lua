@@ -55,19 +55,21 @@ local function get_decision(prompt, default)
     local decision
     while true do
         term.setTextColor(term_color)
-        io.write(prompt.."("..(default == 1 and "Y" or "y").."/"..(default == -1 and "N" or "n")..")\n")
+        io.write(prompt)
+        term.setTextColor(colors.orange)
+        io.write(" ("..(default and "Y" or "y").."/"..(default == false and "N" or "n")..")\n")
         term.setTextColor(colors.white)
         io.write(">> ")
-        if default == 1 or default == -1 then
+        if default ~= nil then
             term.setTextColor(colors.lightGray)
-            io.write(default == 1 and "Y" or "N")
+            io.write(default and "y" or "n")
             moveCursorPos(-1, 0)
             term.setTextColor(colors.white)
         end
         local _, key, _ = os.pullEvent("key")
         decision = keys.getName(key)
         if decision == "enter" then
-            if default ~= 0 then
+            if default ~= nil then
                 decision = default
                 break
             else
@@ -76,10 +78,10 @@ local function get_decision(prompt, default)
                 print("No default value provided - please press y or n")
             end
         elseif decision == "y" then
-            decision = 1
+            decision = true
             break
         elseif decision == "n" then
-            decision = -1
+            decision = false
             break
         else
             term.setTextColor(colors.red)
@@ -89,8 +91,8 @@ local function get_decision(prompt, default)
     end
     moveCursorPos(nil, 0)
     term.clearLine()
-    term.setTextColor(decision == 1 and colors.lime or colors.red)
-    print(decision == 1 and "y" or "n")
+    term.setTextColor(decision and colors.lime or colors.red)
+    print(decision and "y" or "n")
     term.setTextColor(term_color)
     return decision
 end
@@ -128,4 +130,11 @@ if fs.exists("/startup") then
 else
     local startup = fs.open("/startup", "w")
     startup.write("shell.setPath(shell.path()..\":"..tets_path.."/".."\")")
+end
+
+local do_restart = get_decision("Installation successful. The computer needs to be restarted to use tets. Would you like to restart now?")
+if do_restart then
+    os.reboot()
+else
+    print("Thank you for installing tets!")
 end
