@@ -29,6 +29,7 @@ local function get_text(prompt, default)
                 local key_name = keys.getName(key)
                 if key_name == "enter" then
                     input = default
+                    print("")
                     break
                 elseif string.find("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", key_name, 0, true) ~= nil or key_name == "slash" or key_name == "minus" then
                     moveCursorPos(nil, 0)
@@ -41,7 +42,7 @@ local function get_text(prompt, default)
         else
             input = io.read()
         end
-        moveCursorPos(nil, 0)
+        moveCursorPos(nil, -1)
         term.clearLine()
         term.setTextColor(colors.orange)
         print(input)
