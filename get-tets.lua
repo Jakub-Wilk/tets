@@ -124,8 +124,8 @@ tets.write(tets_script)
 tets.close()
 
 if fs.exists("/startup") then
-    print("A startup script already exists; please add ".."/"..shell.dir().." to your path manually!")
+    print("A startup script already exists; please add "..tets_path.."/".." to your path manually!")
 else
     local startup = fs.open("/startup", "w")
-    startup.write("shell.setPath(shell.path()..\":".."/"..shell.dir().."\")")
+    startup.write("shell.setPath(shell.path()..\":"..tets_path.."/".."\")")
 end
