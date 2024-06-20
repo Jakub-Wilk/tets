@@ -104,7 +104,7 @@ local tets_path = get_text("Path to install tets at:", "/bin/tets")
 tets_path = "/"..fs.combine(tets_path)
 
 if fs.exists(tets_path) then
-    local do_reset = get_decision("A tets installation already exists at the selected path. Do you wish to reinstall?", -1)
+    local do_reset = get_decision("A tets installation already exists at the selected path. Do you wish to reinstall?", false)
     if not do_reset then
         goto exit
     else
@@ -114,7 +114,7 @@ end
 
 fs.makeDir(tets_path.."/".."packages")
 
-local do_global = get_decision("Do you want tets to install packages globally? (Programs will have to be ran through \"tets run\" to resolve tets dependencies, but it will save on disk space. When enabled, you can still install dependencies locally through \"tets localize\". This can be changed later.)", -1)
+local do_global = get_decision("Do you want tets to install packages globally? (Programs will have to be ran through \"tets run\" to resolve tets dependencies, but it will save on disk space. When enabled, you can still install dependencies locally through \"tets localize\". This can be changed later.)", false)
 
 local tetsconfig = fs.open(tets_path.."/".."tetsconfig.json", "w")
 tetsconfig.write(textutils.serializeJSON({sources = {"https://raw.githubusercontent.com/Jakub-Wilk/cappack/master/tetsfile.json",}, global_first = do_global}))
