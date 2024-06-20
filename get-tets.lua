@@ -41,7 +41,7 @@ local function get_text(prompt, default)
         else
             input = io.read()
         end
-        moveCursorPos(nil, -1)
+        moveCursorPos(nil, 0)
         term.clearLine()
         term.setTextColor(colors.orange)
         print(input)
@@ -96,7 +96,6 @@ local function get_decision(prompt, default)
 end
 
 shell.setDir("/")
-term.clear()
 term.setTextColor(colors.blue)
 
 local tets_path = get_text("Path to install tets at:", "/bin/tets")
